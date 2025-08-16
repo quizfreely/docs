@@ -1,0 +1,49 @@
+---
+title: Quizfreely Docs
+description: Get started building your docs site with Starlight.
+template: splash
+banner:
+    content: |
+        This page is for developers & contributors. Go back to <a href="https://quizfreely.org">quizfreely.org</a>?
+hero:
+  tagline: Developer/contributor documentation
+  image:
+    file: ../../assets/logo-800.png
+  actions:
+    - text: Read the docs
+      link: /docs/overview/intro/
+    - text: quizfreely.org
+      link: https://quizfreely.org
+      icon: right-arrow
+      variant: minimal
+---
+
+import { LinkCard, Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+    <LinkCard
+        title="Overview & Contributor Guide"
+        href="/docs/overview"
+        description="Overview of stuff"
+    />
+    <LinkCard
+        title="DevOps Reference"
+        href="/docs/overview"
+        description="Overview of stuff"
+    />
+    <LinkCard
+        title="Web App"
+        href="/docs/"
+        description="Docs for Quizfreely's web app frontend"
+    />
+    <LinkCard
+        title="API"
+        href="/docs/"
+        description="Docs for Quizfreely's backend API"
+    />
+    <LinkCard
+        title="Local API"
+        href="/docs/"
+        description="Docs for Quizfreely's browser implementation of some backend API features, for local functionality and users without accounts"
+    />
+</CardGrid>
