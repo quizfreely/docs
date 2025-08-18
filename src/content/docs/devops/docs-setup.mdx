@@ -50,3 +50,9 @@ mkdir -p /srv/quizfreely-docs/www
 sudo chown -R quizfreely-docs:quizfreely-docs /srv/quizfreely-docs/www
 sudo chmod 755 /srv/quizfreely-docs
 ```
+
+## Notes
+
+Make sure the server has rsync: `apt install rsync`
+
+If rsync runs on the remote server/gh actions runner but says "rsync: command not found", it means the server doesn't have rsync, but the remote server/gh actions runner does.
