@@ -1,0 +1,16 @@
+---
+title: DevOps Something
+description: idk
+---
+
+todo add this to docs (visudo thing)
+```
+# Allow `quizfreely` user to start/stop/restart quizfreely-api and quizfreely-web
+quizfreely ALL=NOPASSWD: \
+    /usr/bin/systemctl start quizfreely-api.service, \
+    /usr/bin/systemctl stop quizfreely-api.service, \
+    /usr/bin/systemctl restart quizfreely-api.service, \
+    /usr/bin/systemctl start quizfreely-web.service, \
+    /usr/bin/systemctl stop quizfreely-web.service, \
+    /usr/bin/systemctl restart quizfreely-web.service
+```
