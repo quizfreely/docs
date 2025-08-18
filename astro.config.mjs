@@ -29,6 +29,12 @@ export default defineConfig({
 					autogenerate: { directory: 'reference' },
 				},
 				{
+					label: 'IDB API Layer',
+                    autogenerate: {
+                        directory: 'idb-api-layer'
+                    }
+				},
+				{
 					label: 'DevOps Reference',
                     autogenerate: {
                         directory: 'devops'
