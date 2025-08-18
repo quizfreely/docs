@@ -1,6 +1,10 @@
 ---
-title: Intro
-description: idbapilayeridk
+title: IDB API Layer
+description: Docs for Quizfreely's IndexedDB API Layer
 ---
 
-i need to write docs later
+Quizfreely's web app needs to query our backend API to query/store/interact with users' data.
+
+Users who don't create an account can still use Quizfreely, but their studysets & data are stored locally in their browsers, not on Quizfreely's servers or through Quizfreely's backend API.
+
+Quizfreely's web app uses IndexedDB to store local data. This API layer thing makes it easy to query/interact with data from IndexedDB the same way the web-app queries the backend API to interact with the database on our server.
