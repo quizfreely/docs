@@ -20,25 +20,23 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Overview',
-                    autogenerate: {
-                        directory: 'overview'
-                    }
+                    autogenerate: {directory: 'overview'}
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Web App',
+                    autogenerate: {directory: 'web'}
+				},
+				{
+					label: 'API',
+                    autogenerate: {directory: 'api'}
 				},
 				{
 					label: 'IDB API Layer',
-                    autogenerate: {
-                        directory: 'idb-api-layer'
-                    }
+                    autogenerate: {directory: 'idb-api-layer'}
 				},
 				{
 					label: 'DevOps Reference',
-                    autogenerate: {
-                        directory: 'devops'
-                    }
+                    autogenerate: {directory: 'devops'}
 				},
 			],
 		}),
