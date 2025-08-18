@@ -17,6 +17,7 @@ adduser --disabled-password quizfreely-docs
 ```sh
 # on your machine
 ssh-keygen -t ed25519 -C "quizfreely-docs-gh-actions" -f qzfr_docs_key
+# if it asks for a passphrase or blank for no passphrase, choose no passphrase
 
 # when its done you get `qzfr_docs_key` and `qzfr_docs_key.pub`,
 # copy the contents of `qzfr_docs_key.pub` (the public key)
