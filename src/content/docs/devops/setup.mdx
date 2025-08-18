@@ -1,11 +1,51 @@
 ---
 title: DevOps Setup
-description: Overview of everything
+description: idk
 ---
 
-Guides lead a user through a specific task they want to accomplish, often with a sequence of steps.
-Writing a good guide requires thinking about what your users are trying to do.
+## Quizfreely Docs
 
-## Further reading
+### User & SSH Key
 
-- Read [about how-to guides](https://diataxis.fr/how-to-guides/) in the Diátaxis framework
+These instructions are for setting up an ssh key for quizfreely/docs' `deploy-production` workflow/GitHub action which builds the documentation site and uploads it to our server.
+
+```sh
+# on the server
+adduser --disabled-password quizfreely-docs
+```
+
+```sh
+# on your machine
+ssh-keygen -t ed25519 -C "quizfreely-docs-gh-actions" -f qzfr_docs_key
+
+# when its done you get `qzfr_docs_key` and `qzfr_docs_key.pub`,
+# copy the contents of `qzfr_docs_key.pub` (the public key)
+
+# i personally do `nvim qzfr_docs_key.pub` then copy the whole thing using gg V G y
+```
+
+```sh
+# on the server
+su quizfreely-docs
+mkdir -p ~/.ssh/
+touch ~/.ssh/authorized_keys
+nvim ~/.ssh/authorized_keys # edit ~/.ssh/authorized_keys
+# paste the public key into that file
+```
+
+Now copy the private key (`qzfr_docs_key`) into a GitHub environment secret.
+
+The production deployment workflow/GitHub-action uses the `production` environment. Go under Repository Settings > Environments > Production > Environment secrets, and create an environment secret named `PROD_SERVER_NONROOT_SSH_KEY` with the value of the copied private key (contents of `qzfr_docs_key`).
+
+When you're done saving the public key on the server and the private key into a repository environment secret, you can delete `qzfr_docs_key` and `qzfr_docs_key.pub` from your machine.
+
+### Folders & Permissions
+
+```sh
+# back to root
+# you might need to run `exit` if you're still the `quizfreely-docs` user
+mkdir -p /srv/quizfreely-docs/www
+
+sudo chown -R quizfreely-docs:quizfreely-docs /srv/quizfreely-docs/www
+sudo chmod 755 /srv/quizfreely-docs
+```

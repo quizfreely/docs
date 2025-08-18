@@ -1,0 +1,25 @@
+name: Deploy Production
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    name: Build & deploy docs website
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v3
+      - name: npm run build
+        run: |
+          cd web
+          npm run build
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PROD_SERVER_NONROOT_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H server.quizfreely.org >> ~/.ssh/known_hosts
+      - name: Rsync build, node_modules, package.json, & package-lock.json
+        run: |
+          rsync -av --delete \
+            -e "ssh -i ~/.ssh/id_ed25519" \
+            web/ quizfreely-docs@server.quizfreely.org:/srv/quizfreely-docs/www/
