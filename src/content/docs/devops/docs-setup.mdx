@@ -7,7 +7,7 @@ description: idk
 
 ### User & SSH Key
 
-These instructions are for setting up an ssh key for quizfreely/docs' `deploy-production` workflow/GitHub action which builds the documentation site and uploads it to our server.
+To set up an ssh key for quizfreely/docs' `deploy-production` workflow/GitHub action which builds the documentation site and uploads it to our server:
 
 ```sh
 # on the server
@@ -49,6 +49,25 @@ mkdir -p /srv/quizfreely-docs/www
 
 sudo chown -R quizfreely-docs:quizfreely-docs /srv/quizfreely-docs/www
 sudo chmod 755 /srv/quizfreely-docs
+```
+
+### Server Config
+
+Now to configure our server/reverse proxy, caddy, to serve the static files for the docs site, edit `/etc/caddy/Caddyfile`
+```
+quizfreely.org {
+    # other stuff
+
+    handle_path /docs* {
+        root * /srv/quizfreely-docs/www 
+        file_server
+    }
+}
+```
+
+Then reload caddy
+```sh
+systemctl reload caddy
 ```
 
 ## Notes
