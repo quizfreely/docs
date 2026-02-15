@@ -1,4 +1,8 @@
-# How Authentication & OAuth works in Quizfreely's API
+---
+title: Authentication & OAuth
+description: How Authentication & OAuth works in Quizfreely's API
+---
+
 
 When a user signs up with a username & password, Quizfreely's website makes a http request to Quizfreely's API. The API stores the username & hashed/encrypted password in Quizfreely's PostgreSQL database. Then it creates a session token in the database, and sends it to the user in a cookie.
 
