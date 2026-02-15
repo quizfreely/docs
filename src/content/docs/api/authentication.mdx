@@ -1,0 +1,68 @@
+# Authentication
+
+## Overview
+
+This document explains how the API reads authentication tokens from cookies and headers, and how the frontend can make authenticated requests to the API using tokens in the Authorization header.
+
+## API Token Extraction
+
+The API can extract authentication tokens from either cookies or HTTP headers. Here’s how to access the token in different scenarios.
+
+### Extracting Token from Cookies
+
+In the middleware for authentication, typically you would find the token like this:
+
+```javascript
+const getTokenFromCookie = (req) => {
+    const token = req.cookies['auth_token'];
+    return token || null;
+};
+```
+
+### Extracting Token from Headers
+
+Alternatively, the token can be extracted directly from the authorization header:
+
+```javascript
+const getTokenFromHeader = (req) => {
+    const authHeader = req.headers['authorization'];
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        return authHeader.split(' ')[1]; 
+    }
+    return null;
+};
+```
+
+## Making Authenticated Requests
+
+From the frontend, you can make authenticated requests to the API by setting the `Authorization` header with the extracted token.
+
+### Sample Frontend Code
+
+Here's how to extract the token and make a request:
+
+```javascript
+const token = localStorage.getItem('auth_token');
+
+fetch('https://api.quizfreely.com/secure-endpoint', {
+    method: 'GET',
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+    }
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+})
+.then(data => {
+    console.log('Authenticated Response:', data);
+})
+.catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+});
+```
+
+With this setup, both the API and frontend can successfully handle authentication tokens, ensuring secure and authorized access to resources.
