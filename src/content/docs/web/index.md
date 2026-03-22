@@ -9,4 +9,3 @@ It's repository is quizfreely/quizfreely: [Codeberg](https://codeberg.org/quizfr
 
 The web app is open source & licensed under AGPL-3.0.
 
-(this documentation is a work in progress)
