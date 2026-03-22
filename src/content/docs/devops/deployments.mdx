@@ -1,0 +1,56 @@
+---
+title: Production Deployments
+description: Overview of automated deployment workflows for the web-app, API, and documentation site
+---
+import { FileTree } from '@astrojs/starlight/components';
+
+The repository `quizfreely/quizfreely` has a GitHub Actions workflow, `.github/workflows/deploy-prod.yml`, to automate the process of deploying new versions of the web app and API. Quizfreely's documentation, `quizfreely/docs`, also has a workflow to update the documentation website, `update-site.yml`.
+
+The web app & API are both updated in the same workflow so that there is zero (or minimal) downtime and no moments where the web app or API is "partially updated" (which would cause errors for anyone using the website while it's being updated).
+
+The deploy-prod workflow compiles the API and uploads the executable to the server, builds the web app and uploads it to the server, connects via ssh to the server to run database migrations, and then restarts systemd services. It will also do a rollback to automatically fix everything if any errors happen, and it runs end-to-end tests on the whole website after it's updated (and will do a rollback if any tests fail).
+
+To avoid partial updates or downtime, the server has a symlink to the folder with the currently deployed version of the API and web app (`/home/quizfreely/web/current` and `/home/quizfreely/api/current`). These are symlinks to folders like `/home/quizfreely/web/releases/v1.2.3/` and `/home/quizfreely/api/releases/v1.2.3/`. While the new version is getting uploaded, the "current" symlink(s) are still pointing to the old version. After the new version of the API and web app are both uploaded and database migrations are finished, it updates both symlinks, at the same time, and restarts the systemd services, so the API and web app are updated with no delay and no "partially updated" changes. The reverse proxy (caddy) and systemd files all use the `/home/quizfreely/web/current/` or `/home/quizfreely/api/current/` folders for everything, so updates "just work" perfectly.
+
+<FileTree>
+- /home/quizfreely (on our production server)
+    - api
+        - db/migrations/
+        - releases
+            - v1.2.3
+                - api-server compiled API executable
+            - v1.3.0
+                - api-server
+        - current/ symlink to releases/v#.#.#
+        - .env
+        - config.toml
+    - web
+        - releases
+            - v1.2.3
+                - build/
+                - node_modules/
+                - package-lock.json
+                - package.json
+            - v1.3.0
+                - build/
+                - node_modules/
+                - package-lock.json
+                - package.json
+        - current/ symlink to releases/v#.#.#
+        - .env
+</FileTree>
+
+Also, to rollback an update, all we need to do is change the `current` symlink back to the old version it used to point to. The folder that the `current` symlink used to point to still exists during and after an update, so rolling back is really simple.
+
+`quizfreely/docs`' update-site workflow builds the docs site's static pages and uploads them to the server.
+
+Our server uses Caddy to reverse proxy quizfreely.org to qzfr-web's service and quizfreely.org/api to qzfr-api's service, and Caddy also serves static files for Quizfreely's web-app and documentation site.
+
+The web-app's static files like JS, CSS, etc are in `/_app/`, `/_app/immutable/` and `/immutable/`.
+
+The documentation site under `quizfreely.org/docs/` is made with Astro and built into a static site, with it's static files under `/srv/quizfreely-docs/www/`.
+
+The `Caddyfile` for Quizfreely's production server is in `quizfreely/quizfreely` at `config/Caddyfile`.
+
+The `Caddyfile` and `quizfreely-web.service` systemd service file in `quizfreely/quizfreely/config/` are NOT updated automatically with any of the deploy-prod workflows. Stuff like the Caddyfile needs to be updated manually because other services might run on the same server Quizfreely is hosted on.
+
