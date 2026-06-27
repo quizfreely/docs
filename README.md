@@ -2,6 +2,6 @@
 
 Developer/Contributor Documentation for Quizfreely, a free and open source studying tool.
 
-https://quizfreely.org/docs
+https://docs.quizfreely.org
 
 [Codeberg](https://codeberg.org/quizfreely/docs) · [GitHub](https://github.com/quizfreely/docs)
