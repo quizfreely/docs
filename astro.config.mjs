@@ -5,7 +5,6 @@ import starlight from '@astrojs/starlight';
 // https://astro.build/config
 export default defineConfig({
     site: "https://quizfreely.org",
-    base: "/docs/",
 	integrations: [
 		starlight({
 			title: 'Quizfreely',
