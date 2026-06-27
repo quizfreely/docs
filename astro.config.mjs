@@ -16,6 +16,14 @@ export default defineConfig({
             editLink: {
                 baseUrl: "https://github.com/quizfreely/docs/edit/main/"
             },
+			head: [{
+				tag: "script",
+				attrs: {
+					defer: true,
+					src: "https://quizfreely.org/umami/script.js",
+					"data-website-id": "66bb49b5-7ae1-47a7-b53a-4be4adcccad9"
+				}
+			}],
 			sidebar: [
 				{
 					label: 'Overview',
